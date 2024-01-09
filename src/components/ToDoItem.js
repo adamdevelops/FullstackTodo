@@ -26,7 +26,7 @@ function ToDoItem(params){
                     setOpenModal(true) }}>Delete</button>
             </li>
 
-            <ActionModal action={todoAction} openActionModal={openModal}  />
+            <ActionModal action={todoAction} openActionModal={openModal} setOpenModal={setOpenModal}  />
         </div>
         
     )

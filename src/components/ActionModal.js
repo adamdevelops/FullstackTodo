@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
-function ActionModal({action, openActionModal}){
+function ActionModal({action, openActionModal, setOpenModal}){
     
     const style = {
         position: 'absolute',
@@ -19,11 +19,7 @@ function ActionModal({action, openActionModal}){
         p: 4
       };
 
-    // console.log('todoAction', props.action) 
-    console.log('openActionModal', openActionModal) 
-
-    const [open, setOpen] = React.useState(openActionModal);
-    setOpen(openActionModal)
+    const [open, setOpen] = React.useState(false);
     console.log('initial open state', open)
 
     const handleOpen = () => {
@@ -39,15 +35,32 @@ function ActionModal({action, openActionModal}){
         //     return;
         // }
         setOpen(false);
+        setOpenModal(false);
         console.log('open', open)
     }
 
-    const [todoType, setTodoType] = React.useState(action);
+    const [todoType, setTodoType] = React.useState('');
+
+    function modifyModal() {
+        console.log('action', action)
+        console.log('todoType', todoType)
+       
+    }
 
     // Open Modal if button if one of buttons are clicked in the todo
     // if(openActionModal ){
     //     handleOpen();
     // }
+
+    useEffect(() => {
+        console.log('useeffect called')
+        if(openActionModal){
+            // Set TodoType so we can later modify which modal to display based on the action the user chose.
+            setTodoType(action)
+            console.log('trigger useEffect open')
+            handleOpen();
+        }
+    },[openActionModal])
 
 
     let title, body;
@@ -57,14 +70,14 @@ function ActionModal({action, openActionModal}){
         title = "Edit Todo";
         body = <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                     <input></input>
-                    <button>Edit</button>
-                    <button>Cancel</button>
+                    <button onClick={handleClose}>Edit</button>
+                    <button onClick={handleClose}>Cancel</button>
                 </Typography>
     } else{
         title = "Delete Todo";
         body = <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                     Are you sure you want to delete todo?
-                    <Button onClick={handleClose}>Yes</Button><Button onClick={() => handleClose()}>No</Button>
+                    <Button onClick={handleClose}>Yes</Button><Button onClick={handleClose}>No</Button>
                 </Typography>
     }
 
