@@ -55,7 +55,7 @@ function ActionModal({action, openActionModal, setOpenModal}){
     useEffect(() => {
         console.log('useeffect called')
         if(openActionModal){
-            // Set TodoType so we can later modify which modal to display based on the action the user chose.
+            // Set TodoType so we can later modify which modal to display based on the action the user chose
             setTodoType(action)
             console.log('trigger useEffect open')
             handleOpen();
