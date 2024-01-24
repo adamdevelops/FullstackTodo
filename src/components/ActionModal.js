@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import React, { useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 // import { useForm } from 'react-hook-form';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -25,9 +24,11 @@ function ActionModal({todo, action, openActionModal, setOpenModal, EditTodo, Del
     const handleOpen = () => {
         console.log('handleOpen called')
         setOpen(true);
+        setOpenModal(true);
     }
-    function handleClose () {
+    const handleClose = () => {
         console.log('handleClose called')
+        setOpen(false);
         setOpenModal(false);
     }
 
@@ -68,11 +69,12 @@ function ActionModal({todo, action, openActionModal, setOpenModal, EditTodo, Del
         EditTodo(todo)
 
         handleClose()
-    }, [todo, todoInput, open])
+    }, [todo, todoInput])
 
     const handleDelete = useCallback(() => {
-        handleClose()
         DeleteTodo(todo.id)
+        handleClose()
+
     }, [todo])
 
     // const { register, handleSubmit, watch, formState: { errors } } = useForm<MyInputTypes>();
