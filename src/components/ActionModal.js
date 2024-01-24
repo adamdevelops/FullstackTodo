@@ -53,10 +53,9 @@ function ActionModal({todo, action, openActionModal, setOpenModal, EditTodo, Del
 
     let title, body;
     
-    function editTodoSubmit(event) {
+    function updateTodo(event) {
         setTodoInput(event.target.value)     
         console.log('edit todo change', todoInput)   
-
     }
 
     const handleEdit = useCallback((event) => {
@@ -65,9 +64,11 @@ function ActionModal({todo, action, openActionModal, setOpenModal, EditTodo, Del
         let editted_todo = todo;
         editted_todo.title = todoInput;
         console.log('edit_todo', editted_todo)
+        
+        EditTodo(todo)
+
         handleClose()
-        // EditTodo(todo)
-    }, [todo])
+    }, [todo, todoInput, open])
 
     const handleDelete = useCallback(() => {
         handleClose()
@@ -81,9 +82,9 @@ function ActionModal({todo, action, openActionModal, setOpenModal, EditTodo, Del
         title = "Edit Todo";
         body = <form>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                            <input name="todo_area" defaultValue={todo.title} onChange={editTodoSubmit} ></input>
+                            <input name="todo_area" defaultValue={todo.title} onChange={updateTodo} ></input>
                             <button onClick={handleEdit}>Edit</button>
-                            <button onClick={handleClose}>Cancel</button>
+                            <button onClick={handleClose} type='button'>Cancel</button>
                     </Typography>
                 </form>
     } else{
