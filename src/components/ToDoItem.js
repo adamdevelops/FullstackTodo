@@ -5,7 +5,7 @@ import ActionModal from './ActionModal';
 
 function ToDoItem(params){    
 
-    const handleDelete = useCallback(() => params.DeleteTodo(params.todo.id), [params])
+    //const handleDelete = useCallback(() => params.DeleteTodo(params.todo.id), [params])
 
     const [todoAction, setTodoAction] = React.useState('');
     const [openModal, setOpenModal] = React.useState(false);
@@ -26,7 +26,7 @@ function ToDoItem(params){
                     setOpenModal(true) }}>Delete</button>
             </li>
 
-            <ActionModal action={todoAction} openActionModal={openModal} setOpenModal={setOpenModal}  />
+            <ActionModal todo={params.todo} action={todoAction} openActionModal={openModal} setOpenModal={setOpenModal} EditTodo={params.EditTodo} DeleteTodo={params.DeleteTodo} />
         </div>
         
     )

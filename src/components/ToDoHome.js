@@ -31,16 +31,16 @@ function ToDoHome(){
         e.preventDefault();        
     }
 
-    function EditTodo(TodoId){
+    function EditTodo(Todo){
         // console.log('edit')
 
-        console.log('id to edit', TodoId)
+        console.log('id to edit', Todo)
 
         const nextTodo = items.map((item, i) => {
-            if (i+1 === TodoId) {
+            if (i+1 === Todo.id) {
                 // Edit chosen item
                 let editItem = item;
-                editItem.title = 'edited todo!'
+                editItem.title = Todo.title
                 return editItem;
             } else {
                 // The rest haven't changed
@@ -56,6 +56,7 @@ function ToDoHome(){
         console.log('id to delete', TodoId)
 
         setItems(items.filter(item => item.id !== TodoId))
+        console.log('items', items)
     }
 
 

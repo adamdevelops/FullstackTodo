@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import React from 'react';
+import React, { useCallback, useRef } from 'react';
+// import { useForm } from 'react-hook-form';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
-function ActionModal({action, openActionModal, setOpenModal}){
+function ActionModal({todo, action, openActionModal, setOpenModal, EditTodo, DeleteTodo}){
     
     const style = {
         position: 'absolute',
@@ -20,40 +21,27 @@ function ActionModal({action, openActionModal, setOpenModal}){
       };
 
     const [open, setOpen] = React.useState(false);
-    console.log('initial open state', open)
 
     const handleOpen = () => {
         console.log('handleOpen called')
-        // if(open === true){
-        //     return;
-        // }
         setOpen(true);
     }
     function handleClose () {
         console.log('handleClose called')
-        // if(open === false){
-        //     return;
-        // }
-        setOpen(false);
         setOpenModal(false);
-        console.log('open', open)
     }
 
     const [todoType, setTodoType] = React.useState('');
+    const [newTodo, setNewTodo] = React.useState('');
+    const [todoInput, setTodoInput] = React.useState('');
 
-    function modifyModal() {
-        console.log('action', action)
-        console.log('todoType', todoType)
-       
-    }
-
-    // Open Modal if button if one of buttons are clicked in the todo
-    // if(openActionModal ){
-    //     handleOpen();
-    // }
 
     useEffect(() => {
-        console.log('useeffect called')
+        console.log('useEffect called')
+        console.log('todo', todo)
+
+        // Set inital value of input field to edit todo
+        setTodoInput(todo.title)
         if(openActionModal){
             // Set TodoType so we can later modify which modal to display based on the action the user chose
             setTodoType(action)
@@ -65,25 +53,50 @@ function ActionModal({action, openActionModal, setOpenModal}){
 
     let title, body;
     
+    function editTodoSubmit(event) {
+        setTodoInput(event.target.value)     
+        console.log('edit todo change', todoInput)   
+
+    }
+
+    const handleEdit = useCallback((event) => {
+        event.preventDefault();
+        console.log('todoInput in handleedit', todoInput)
+        let editted_todo = todo;
+        editted_todo.title = todoInput;
+        console.log('edit_todo', editted_todo)
+        handleClose()
+        // EditTodo(todo)
+    }, [todo])
+
+    const handleDelete = useCallback(() => {
+        handleClose()
+        DeleteTodo(todo.id)
+    }, [todo])
+
+    // const { register, handleSubmit, watch, formState: { errors } } = useForm<MyInputTypes>();
+
 
     if(todoType === "edit"){
         title = "Edit Todo";
-        body = <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                    <input></input>
-                    <button onClick={handleClose}>Edit</button>
-                    <button onClick={handleClose}>Cancel</button>
-                </Typography>
+        body = <form>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                            <input name="todo_area" defaultValue={todo.title} onChange={editTodoSubmit} ></input>
+                            <button onClick={handleEdit}>Edit</button>
+                            <button onClick={handleClose}>Cancel</button>
+                    </Typography>
+                </form>
     } else{
         title = "Delete Todo";
         body = <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                     Are you sure you want to delete todo?
-                    <Button onClick={handleClose}>Yes</Button><Button onClick={handleClose}>No</Button>
+                    <Button onClick={handleDelete}>Yes</Button><Button onClick={handleClose}>No</Button>
                 </Typography>
     }
+    
 
     return(
         <div>
-            <Button onClick={handleOpen}>OPEN MODAL</Button>
             <Modal
             open={open}
             onClose={handleClose}
